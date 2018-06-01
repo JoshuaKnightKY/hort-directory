@@ -41,7 +41,7 @@
 
       }
 
-      legendControl.addTo(map);
+      // legendControl.addTo(map);
 
       omnivore.csv('data/GeocodeHortDirectory.csv')
           .on('ready', function(e) {
