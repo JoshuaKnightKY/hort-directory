@@ -2,11 +2,11 @@
 
     // initialize map, centered on Kenya
       var map = L.map('map', {
-        zoomSnap: .1,
+        zoomSnap: .05,
         center: [37.839333, -85.7],
-        zoom: 7,
-        minZoom: 5,
-        maxZoom: 9,
+        zoom: 7.5,
+        minZoom: 7,
+        maxZoom: 18,
         // maxBounds: L.latLngBounds([-6.22, 27.72], [5.76, 47.83])
       });
 
@@ -26,6 +26,7 @@
         position: 'bottomright'
       });
 
+
       // when the control is added to the map
       legendControl.onAdd = function (map) {
 
@@ -43,15 +44,77 @@
 
       legendControl.addTo(map);
 
-
-      omnivore.csv('data/GeocodeHortDirectory.csv').addTo(map);
-
       omnivore.csv('data/GeocodeHortDirectory.csv')
           .on('ready', function(e) {
-              console.log(e.target)
+              drawMap(e.target.toGeoJSON())
           })
           .on('error', function(e) {
               console.log(e.error);
       });
+
+      function drawMap(data) {
+
+        console.log(data)
+        // add initial markers
+        for (var i = 0; i < data.features.length; i++){
+          var props = data.features[i].properties;
+          var locationPopup =
+            "<h2>" + props.resource_t + "</h2>" +  props.optional_r + "<br><b>" + props.org_name + "</b>" +
+            "<p>" + props.address + "<br><br><b>Contact Information:  <br></b>" + props.contact_na + "<br>" + props.contact_ti + "<br>" + props.phone + "<br>" + props.email + "</p>";
+            var iconLocation = createIcon(props.resource_t);
+            // swap order of coordinates
+            var coordinates = [data.features[i].geometry.coordinates[1], data.features[i].geometry.coordinates[0]]
+            L.marker(coordinates, {icon: iconLocation}).addTo(map).bindTooltip(locationPopup);
+          };
+
+        // createIcon function assigns iconURL based on type
+        function createIcon(locationType) {
+          var iconURL = "",
+              iconSize = 35;
+
+          if (locationType == "Shared Equipment") {
+              iconURL = "icons/equipment.png",
+              iconSize = [35, 25];
+          } else if (locationType == "Educational Greenhouse") {
+              iconURL = "icons/flower.png";
+          } else if (locationType == "Reserved1") {
+              iconURL = "icons/Reserved1.png";
+          } else if (locationType == "Reserved2") {
+              iconURL = "icons/Reserved2.png";
+          } else if (locationType == "Reserved3") {
+              iconURL = "icons/Reserved3.png";
+          } else if (locationType == "Reserved4") {
+              iconURL = "icons/Reserved4.png";
+          } else if (locationType == "Reserved5") {
+              iconURL = "icons/Reserved5.png";
+          } else if (locationType == "Reserved6") {
+              iconURL = "icons/Reserved6.png";
+          } else {
+              iconURL = "icons/flower.png";
+          }
+
+          // return result, iconUrl is argument for L.icon, NOT iconURL
+          var result = L.icon({
+              iconUrl: iconURL,
+              iconSize: iconSize,
+              popupAnchor: [0, -15]
+          });
+          return result;
+        };
+      } // end drawMap()
+
+      // // Begin Paste from Denver Amenities Legend
+      //
+      // var filterLabels = {
+      //   "<b style='color:#01D9FC; text-shadow: 1px 1px 1px #000;'>After School Programs</b>": geoJsonLayers.programsLayer,
+      //   "<b style='color:#FF0000; text-shadow: 1px 1px 1px #000;'>Fire Stations</b>": geoJsonLayers.stationsLayer,
+      //   "<b style='color:#7FF80A; text-shadow: 1px 1px 1px #000;'>Food Stores</b>": geoJsonLayers.storesLayer,
+      // };
+      //
+      // // assign source labels to toggle box
+      // L.control.layers(null, sourcesLabels, { collapsed:false }).addTo(map);
+      //
+      // // Begin Paste from Denver Amenities Legend
+
 
 })();

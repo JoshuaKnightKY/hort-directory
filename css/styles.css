@@ -3,7 +3,11 @@
     background: #448ee4;
     width: 100%;
   }
-  h1 {
-      color: orange;
+  body {
+  }
+  h2 {
+      color: #005d7e;
+      font-weight: bold;
+      font-size: 120%;
   }
 </style>
