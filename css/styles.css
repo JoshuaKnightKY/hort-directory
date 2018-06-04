@@ -3,11 +3,27 @@
     background: #448ee4;
     width: 100%;
   }
+  #about {
+    position: absolute;
+    top: 20px;
+    right: 15px;
+    width: 280px;
+    padding: 0 15px;
+    background: rgba(256, 256, 256, .85);
+    border: 1px solid #005d7e;
+    border-radius: 3px;
+    z-index: 800;
+  }
   body {
+  }
+  h1 {
+    color: #005d7e;
+    font-weight: bold;
+    font-size: 120%;
   }
   h2 {
       color: #005d7e;
       font-weight: bold;
-      font-size: 120%;
+      font-size: 110%;
   }
 </style>

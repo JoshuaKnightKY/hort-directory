@@ -101,19 +101,12 @@
           return result;
         };
       } // end drawMap()
+      function toggleEquipment() {
+        console.log("equipment");
+      }
 
-      // // Begin Paste from Denver Amenities Legend
-      //
-      // var filterLabels = {
-      //   "<b style='color:#01D9FC; text-shadow: 1px 1px 1px #000;'>After School Programs</b>": geoJsonLayers.programsLayer,
-      //   "<b style='color:#FF0000; text-shadow: 1px 1px 1px #000;'>Fire Stations</b>": geoJsonLayers.stationsLayer,
-      //   "<b style='color:#7FF80A; text-shadow: 1px 1px 1px #000;'>Food Stores</b>": geoJsonLayers.storesLayer,
-      // };
-      //
-      // // assign source labels to toggle box
-      // L.control.layers(null, sourcesLabels, { collapsed:false }).addTo(map);
-      //
-      // // Begin Paste from Denver Amenities Legend
-
+      function toggleGreenhouses() {
+        console.log("greenhouse");
+      }
 
 })();
