@@ -1,13 +1,12 @@
 (function(){
 
-    // initialize map, centered on Kenya
+    // initialize map, centered on KY
       var map = L.map('map', {
         zoomSnap: .05,
         center: [37.839333, -85.7],
         zoom: 7.5,
         minZoom: 7,
         maxZoom: 18,
-        // maxBounds: L.latLngBounds([-6.22, 27.72], [5.76, 47.83])
       });
 
     // mapbox API access Token
@@ -20,29 +19,7 @@
         accessToken: accessToken
       }).addTo(map);
 
-      // create Leaflet control for the legend
-      var legendControl = L.control({
-        position: 'bottomright'
-      });
-
-
-      // when the control is added to the map
-      legendControl.onAdd = function (map) {
-
-        // select the legend using id attribute of legend
-        var legend = L.DomUtil.get("legend");
-
-        // disable scroll and click functionality
-        L.DomEvent.disableScrollPropagation(legend);
-        L.DomEvent.disableClickPropagation(legend);
-
-        // return the selection
-        return legend;
-
-      }
-
-      // legendControl.addTo(map);
-
+    // load CSV file
       omnivore.csv('data/GeocodeHortDirectory.csv')
           .on('ready', function(e) {
               drawMap(e.target.toGeoJSON())
@@ -52,7 +29,6 @@
       });
 
       // collapsible meta-text
-
       var coll = document.getElementsByClassName("collapsible");
       var i;
 
@@ -66,7 +42,29 @@
             content.style.display = "block";
           }
         });
-      }       
+      }
+
+      // legend filter (requires jQuery)
+      $(document).ready(function()
+      {
+        $('#checkEquipment').change(function()
+        {
+          if(this.checked == true)
+          {
+               console.log('Show Equipment');
+          }
+        });
+      });
+      $(document).ready(function()
+      {
+        $('#checkGreenhouse').change(function()
+        {
+          if(this.checked == true)
+          {
+               console.log('Show Greenhouses');
+          }
+        });
+      });
 
       function drawMap(data) {
 
@@ -119,12 +117,9 @@
         };
       } // end drawMap()
 
-      function toggleEquipment() {
-        console.log("equipment");
+      function picnicFilter(feature) {
+        if (feature.properties.Picnic === "Yes") return true
       }
 
-      function toggleGreenhouses() {
-        console.log("greenhouse");
-      }
 
 })();
