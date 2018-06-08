@@ -51,6 +51,23 @@
               console.log(e.error);
       });
 
+      // collapsible meta-text
+
+      var coll = document.getElementsByClassName("collapsible");
+      var i;
+
+      for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          var content = this.nextElementSibling;
+          if (content.style.display === "block") {
+            content.style.display = "none";
+          } else {
+            content.style.display = "block";
+          }
+        });
+      }       
+
       function drawMap(data) {
 
         console.log(data)
@@ -76,19 +93,19 @@
               iconSize = [35, 25];
           } else if (locationType == "Educational Greenhouse") {
               iconURL = "icons/flower.png";
-          } else if (locationType == "Reserved1") {
-              iconURL = "icons/Reserved1.png";
-          } else if (locationType == "Reserved2") {
-              iconURL = "icons/Reserved2.png";
-          } else if (locationType == "Reserved3") {
-              iconURL = "icons/Reserved3.png";
-          } else if (locationType == "Reserved4") {
-              iconURL = "icons/Reserved4.png";
-          } else if (locationType == "Reserved5") {
-              iconURL = "icons/Reserved5.png";
-          } else if (locationType == "Reserved6") {
-              iconURL = "icons/Reserved6.png";
-          } else {
+          // } else if (locationType == "Reserved1") {
+          //     iconURL = "icons/Reserved1.png";
+          // } else if (locationType == "Reserved2") {
+          //     iconURL = "icons/Reserved2.png";
+          // } else if (locationType == "Reserved3") {
+          //     iconURL = "icons/Reserved3.png";
+          // } else if (locationType == "Reserved4") {
+          //     iconURL = "icons/Reserved4.png";
+          // } else if (locationType == "Reserved5") {
+          //     iconURL = "icons/Reserved5.png";
+          // } else if (locationType == "Reserved6") {
+          //     iconURL = "icons/Reserved6.png";
+          // } else {
               iconURL = "icons/flower.png";
           }
 
@@ -101,6 +118,7 @@
           return result;
         };
       } // end drawMap()
+
       function toggleEquipment() {
         console.log("equipment");
       }
