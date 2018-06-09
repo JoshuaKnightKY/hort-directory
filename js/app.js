@@ -92,7 +92,7 @@
             var iconLocation = createIcon(props.resource_t);
             // swap order of coordinates
             var coordinates = [data.features[i].geometry.coordinates[1], data.features[i].geometry.coordinates[0]]
-            L.marker(coordinates, {icon: iconLocation}).addTo(map).bindTooltip(locationPopup);
+            L.marker(coordinates, {icon: iconLocation}).addTo(map).bindPopup(locationPopup);
           };
 
         // createIcon function assigns iconURL based on type
@@ -135,14 +135,14 @@
         };
       } // end drawMap()
 
-      function updateMap(data) {
-        if
+      // function updateMap(data) {
+      //   if
+      //
+      // }
 
-      }
-
-      function picnicFilter(feature) {
-        if (feature.properties.Picnic === "Yes") return true
-      }
+      // function picnicFilter(feature) {
+      //   if (feature.properties.Picnic === "Yes") return true
+      // }
 
 
 })();
