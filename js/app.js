@@ -28,6 +28,18 @@
               console.log(e.error);
       });
 
+      var countyStyle = {
+          "color": "#005d7e",
+          "weight": 1,
+          "fillOpacity" : 0.1,
+          "opacity": 0.2
+      };
+
+    // load KY county polygons
+    $.getJSON("./data/ky-counties.geojson", function(counties) { addDataToMap(counties, countyStyle, map); });
+
+
+
       // collapsible meta-text
       var coll = document.getElementsByClassName("collapsible");
       var i;
@@ -143,6 +155,14 @@
       // function picnicFilter(feature) {
       //   if (feature.properties.Picnic === "Yes") return true
       // }
+
+      function addDataToMap(data, style, map) {
+          var dataLayer = L.geoJson(data, {
+            style: style
+          });
+
+          dataLayer.addTo(map);
+      }
 
 
 })();
