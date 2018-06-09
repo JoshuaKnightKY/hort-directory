@@ -51,7 +51,14 @@
         {
           if(this.checked == true)
           {
-               console.log('Show Equipment');
+            console.log('Show Equipment');
+            var equipment = true;
+            updateMap(data);
+          }
+          else {
+            console.log('Hide Equipment');
+            var equipment = false;
+            updateMap(data);
           }
         });
       });
@@ -62,6 +69,13 @@
           if(this.checked == true)
           {
                console.log('Show Greenhouses');
+               var greenhouse = true;
+               updateMap(data);
+          }
+          else {
+            console.log('Hide Greenhouses');
+            var greenhouses = false;
+            updateMap(data);
           }
         });
       });
@@ -74,7 +88,7 @@
           var props = data.features[i].properties;
           var locationPopup =
             "<h2>" + props.resource_t + "</h2>" +  props.optional_r + "<br><b>" + props.org_name + "</b>" +
-            "<p>" + props.address + "<br><br><b>Contact Information:  <br></b>" + props.contact_na + "<br>" + props.contact_ti + "<br>" + props.phone + "<br>" + props.email + "</p>";
+            "<p>" + props.address + "<br><br><b>Contact Information:  <br></b>" + props.contact_na + "<br>" + props.contact_ti + "<br>" + props.phone + "<br><a href='mailto:" + props.email + "'>" + props.email + "</a></p></p>";
             var iconLocation = createIcon(props.resource_t);
             // swap order of coordinates
             var coordinates = [data.features[i].geometry.coordinates[1], data.features[i].geometry.coordinates[0]]
@@ -91,6 +105,9 @@
               iconSize = [35, 25];
           } else if (locationType == "Educational Greenhouse") {
               iconURL = "icons/flower.png";
+
+          // for future datasets
+
           // } else if (locationType == "Reserved1") {
           //     iconURL = "icons/Reserved1.png";
           // } else if (locationType == "Reserved2") {
@@ -104,6 +121,7 @@
           // } else if (locationType == "Reserved6") {
           //     iconURL = "icons/Reserved6.png";
           // } else {
+
               iconURL = "icons/flower.png";
           }
 
@@ -116,6 +134,11 @@
           return result;
         };
       } // end drawMap()
+
+      function updateMap(data) {
+        if
+
+      }
 
       function picnicFilter(feature) {
         if (feature.properties.Picnic === "Yes") return true
