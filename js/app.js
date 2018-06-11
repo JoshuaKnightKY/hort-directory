@@ -28,22 +28,24 @@
               console.log(e.error);
       });
 
+    // set display style for county polygons
       var countyStyle = {
           "color": "#005d7e",
           "weight": 1,
-          "fillOpacity" : 0.1,
+          "fillOpacity" : 0.05,
           "opacity": 0.2
       };
+
+    // initialize filter check
+      var equipment = true;
+      var greenhouses = true;
 
     // load KY county polygons
     $.getJSON("./data/ky-counties.geojson", function(counties) { addDataToMap(counties, countyStyle, map); });
 
-
-
       // collapsible meta-text
       var coll = document.getElementsByClassName("collapsible");
       var i;
-
       for (i = 0; i < coll.length; i++) {
         coll[i].addEventListener("click", function() {
           this.classList.toggle("active");
@@ -65,12 +67,12 @@
           {
             console.log('Show Equipment');
             var equipment = true;
-            updateMap(data);
+            drawMap(e.target.toGeoJSON())
           }
           else {
             console.log('Hide Equipment');
             var equipment = false;
-            updateMap(data);
+            drawMap(e.target.toGeoJSON())
           }
         });
       });
@@ -80,14 +82,14 @@
         {
           if(this.checked == true)
           {
-               console.log('Show Greenhouses');
-               var greenhouse = true;
-               updateMap(data);
+           console.log('Show Greenhouses');
+           var greenhouse = true;
+           drawMap(e.target.toGeoJSON())
           }
           else {
             console.log('Hide Greenhouses');
             var greenhouses = false;
-            updateMap(data);
+            drawMap(e.target.toGeoJSON())
           }
         });
       });
@@ -112,10 +114,10 @@
           var iconURL = "",
               iconSize = 35;
 
-          if (locationType == "Shared Equipment") {
+          if (locationType == "Shared Equipment" && equipment == true) {
               iconURL = "icons/equipment.png",
               iconSize = [35, 25];
-          } else if (locationType == "Educational Greenhouse") {
+          } else if (locationType == "Educational Greenhouse" && greenhouses == true) {
               iconURL = "icons/flower.png";
 
           // for future datasets
@@ -132,9 +134,8 @@
           //     iconURL = "icons/Reserved5.png";
           // } else if (locationType == "Reserved6") {
           //     iconURL = "icons/Reserved6.png";
-          // } else {
-
-              iconURL = "icons/flower.png";
+          } else {
+              iconSize = [0, 0];
           }
 
           // return result, iconUrl is argument for L.icon, NOT iconURL
