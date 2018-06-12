@@ -32,7 +32,7 @@
       // set icons for layer types
       var greenhouseIcon = L.icon({
           iconUrl: "./icons/flower.png",
-          iconSize: 35,
+          iconSize: [35, 25],
           popupAnchor: [0, -15]
       });
 
@@ -88,29 +88,23 @@
       //   };
 
       // create layer groups by resource type
-      var greenhouseLayer = L.geoJson(data, {filter: greenhouseFilter},
-        {
-          pointToLayer: function(feature,latlng) {
-            return L.marker(coordinates, {icon: equipmentIcon});
+      var greenhouseLayer = L.geoJson(data, {
+        filter: greenhouseFilter,
+        pointToLayer: function(feature,latlng) {
+            return L.marker(latlng, {icon: greenhouseIcon});
           }
-        }
-        ).addTo(map);
+        }).addTo(map);
 
-      var equipmentLayer = L.geoJson(data, {filter: equipmentFilter},
-          {
-            pointToLayer: function(feature,latlng) {
-              return L.marker(coordinates, {icon: equipmentIcon});
-            }
-          },
-
-          {
+      var equipmentLayer = L.geoJson(data, {
+        filter: equipmentFilter,
+          pointToLayer: function(feature,latlng) {
+              return L.marker(latlng, {icon: equipmentIcon});
+            },
             onEachFeature : function(feature,layer) {
                 layer.on('mouseover', function() {
                   layer.bindPopup("Shared Equipment");
                 });
-            }
-          },
-          {
+            },
             style: function(feature) {
               return {
                 color: '#01D9FC',
