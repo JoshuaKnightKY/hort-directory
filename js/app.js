@@ -5,7 +5,7 @@
         zoomSnap: .05,
         center: [37.839333, -85.7],
         zoom: 7.5,
-        minZoom: 7,
+        minZoom: 6,
         maxZoom: 18,
       });
 
@@ -36,9 +36,18 @@
           "opacity": 0.2
       };
 
-    // initialize filter check
-      var equipment = true;
-      var greenhouses = true;
+      // set icons for layer types
+      var greenhouseIcon = L.icon({
+          iconUrl: "./icons/flower.png",
+          iconSize: 35,
+          popupAnchor: [0, -15]
+      });
+
+      var equipmentIcon = L.icon({
+          iconUrl: "./icons/equipment.png",
+          iconSize: [35, 25],
+          popupAnchor: [0, -15]
+      });
 
     // load KY county polygons
     $.getJSON("./data/ky-counties.geojson", function(counties) { addDataToMap(counties, countyStyle, map); });
@@ -58,110 +67,112 @@
       });
     }
 
-    // legend filter (requires jQuery)
-    $(document).ready(function()
-    {
-      $('#checkEquipment').change(function()
-      {
-        if(this.checked == true)
-        {
-          console.log('Show Equipment');
-          var equipment = true;
-          drawMap(e.target.toGeoJSON())
-        }
-        else {
-          console.log('Hide Equipment');
-          var equipment = false;
-          drawMap(e.target.toGeoJSON())
-        }
-      });
-    });
-    $(document).ready(function()
-    {
-      $('#checkGreenhouse').change(function()
-      {
-        if(this.checked == true)
-        {
-         console.log('Show Greenhouses');
-         var greenhouse = true;
-         drawMap(e.target.toGeoJSON())
-        }
-        else {
-          console.log('Hide Greenhouses');
-          var greenhouses = false;
-          drawMap(e.target.toGeoJSON())
-        }
-      });
-    });
-
     function drawMap(data) {
 
-      console.log(data)
-      // add initial markers
-      for (var i = 0; i < data.features.length; i++){
-        var props = data.features[i].properties;
-        var locationPopup =
-          "<h2>" + props.resource_t + "</h2>" +  props.optional_r + "<br><b>" + props.org_name + "</b>" +
-          "<p>" + props.address + "<br><br><b>Contact Information:  <br></b>" + props.contact_na + "<br>" + props.contact_ti + "<br>" + props.phone + "<br><a href='mailto:" + props.email + "'>" + props.email + "</a></p></p>";
-          var iconLocation = createIcon(props.resource_t);
-          // swap order of coordinates
-          var coordinates = [data.features[i].geometry.coordinates[1], data.features[i].geometry.coordinates[0]]
-          L.marker(coordinates, {icon: iconLocation}).addTo(map).bindPopup(locationPopup);
-        };
+      // // add custom markers for entire geojson with tooltips
+      // for (var i = 0; i < data.features.length; i++){
+      //   var props = data.features[i].properties;
+      //   var iconLocation = createIcon(props.resource_t);
+      //   var locationPopup =
+      //     "<h2>" + props.resource_t + "</h2>" +  props.optional_r + "<br><b>" + props.org_name + "</b>" +
+      //     "<p>" + props.address + "<br><br><b>Contact Information:  <br></b>" + props.contact_na + "<br>" +
+      //     props.contact_ti + "<br>" + props.phone + "<br><a href='mailto:" + props.email + "'>" + props.email + "</a></p></p>";
+      //     // swap order of coordinates
+      //     var coordinates = [data.features[i].geometry.coordinates[1], data.features[i].geometry.coordinates[0]]
+      //     // L.marker(coordinates, {icon: iconLocation}).bindPopup(locationPopup).addTo(map);
+      //   };
+
+      // create layer groups by resource type
+      var greenhouseLayer = L.geoJson(data, {filter: greenhouseFilter},
+        {
+          pointToLayer: function(feature,latlng) {
+            return L.marker(coordinates, {icon: equipmentIcon});
+          }
+        }
+        ).addTo(map);
+
+      var equipmentLayer = L.geoJson(data, {filter: equipmentFilter},
+          {
+            pointToLayer: function(feature,latlng) {
+              return L.marker(coordinates, {icon: equipmentIcon});
+            }
+          },
+
+          {
+            onEachFeature : function(feature,layer) {
+                layer.on('mouseover', function() {
+                  layer.bindPopup("Shared Equipment");
+                });
+            }
+          },
+          {
+            style: function(feature) {
+              return {
+                color: '#01D9FC',
+                fillColor: '#008196'
+              }
+            }
+        }).addTo(map);
+
+      // create object of all layers
+      var geoJsonLayers = {
+            greenhouseLayer: greenhouseLayer,
+            equipmentLayer: equipmentLayer,
+      };
+
+      // legend for turning on/off layers
+      var sourcesLabels = {
+        "<img src='icons/flower.png' height='35' width='35'><b>Educational Greenhouses</b>": geoJsonLayers.greenhouseLayer,
+        "<img src='icons/equipment.png' height='25' width='35'><b>Shared Equipment</b>": geoJsonLayers.equipmentLayer,
+      };
+
+      L.control.layers(null, sourcesLabels, { collapsed:false }).addTo(map);
+
+
+      // filtering functions for creating multiple layers from single geojson
+      function greenhouseFilter(feature) {
+        if (feature.properties.resource_t === "Educational Greenhouse") return true
+      }
+
+      function equipmentFilter(feature) {
+        if (feature.properties.resource_t === "Shared Equipment") return true
+      }
+
 
       // createIcon function assigns iconURL based on type
-      function createIcon(locationType) {
-        var iconURL = "",
-            iconSize = 35;
-
-        if (locationType == "Shared Equipment" && equipment == true) {
-            iconURL = "icons/equipment.png",
-            iconSize = [35, 25];
-        } else if (locationType == "Educational Greenhouse" && greenhouses == true) {
-            iconURL = "icons/flower.png";
-
-        // for future datasets
-
-        // } else if (locationType == "Reserved1") {
-        //     iconURL = "icons/Reserved1.png";
-        // } else if (locationType == "Reserved2") {
-        //     iconURL = "icons/Reserved2.png";
-        // } else if (locationType == "Reserved3") {
-        //     iconURL = "icons/Reserved3.png";
-        // } else if (locationType == "Reserved4") {
-        //     iconURL = "icons/Reserved4.png";
-        // } else if (locationType == "Reserved5") {
-        //     iconURL = "icons/Reserved5.png";
-        // } else if (locationType == "Reserved6") {
-        //     iconURL = "icons/Reserved6.png";
-        } else {
-            iconSize = [0, 0];
-        }
-
-        // return result, iconUrl is argument for L.icon, NOT iconURL
-        var result = L.icon({
-            iconUrl: iconURL,
-            iconSize: iconSize,
-            popupAnchor: [0, -15]
-        });
-        return result;
-      };
+      // function createIcon(locationType) {
+      //   var iconURL = "",
+      //       iconSize = 35;
+      //
+      //   if (locationType == "Shared Equipment") {
+      //       iconURL = "icons/equipment.png",
+      //       iconSize = [35, 25];
+      //   } else if (locationType == "Educational Greenhouse") {
+      //       iconURL = "icons/flower.png";
+      //   } else {
+      //       iconSize = [0, 0];
+      //   }
+      //
+      //   // return result, iconUrl is argument for L.icon, NOT iconURL
+      //   var result = L.icon({
+      //       iconUrl: iconURL,
+      //       iconSize: iconSize,
+      //       popupAnchor: [0, -15]
+      //   });
+      //   return result;
+      // };
     } // end drawMap()
-
-    // function updateMap(data) {
-    //   if
-    //
-    // }
-
-    // function picnicFilter(feature) {
-    //   if (feature.properties.Picnic === "Yes") return true
-    // }
 
     function addDataToMap(data, style, map) {
         var dataLayer = L.geoJson(data, {
-          style: style
-        });
-
+          style: style},
+          {
+            onEachFeature: function (feature, layer) {
+                console.log(feature);
+			          layer.bindPopup(feature.properties.name);
+		        }
+          }
+        );
         dataLayer.addTo(map);
     }
 
