@@ -19,14 +19,7 @@
         accessToken: accessToken
       }).addTo(map);
 
-    // load CSV file
-      omnivore.csv('data/GeocodeHortDirectory.csv')
-          .on('ready', function(e) {
-              drawMap(e.target.toGeoJSON())
-          })
-          .on('error', function(e) {
-              console.log(e.error);
-      });
+
 
     // set display style for county polygons
       var countyStyle = {
@@ -50,7 +43,19 @@
       });
 
     // load KY county polygons
-    $.getJSON("./data/ky-counties.geojson", function(counties) { addDataToMap(counties, countyStyle, map); });
+    $.getJSON("./data/ky-counties.geojson", function(counties) { 
+
+          // load CSV file
+          omnivore.csv('data/GeocodeHortDirectory.csv')
+          .on('ready', function(e) {
+              drawMap(e.target.toGeoJSON());
+              addDataToMap(counties, countyStyle, map); 
+          })
+          .on('error', function(e) {
+              console.log(e.error);
+      });
+
+    });
 
     // collapsible meta-text
     var coll = document.getElementsByClassName("collapsible");
