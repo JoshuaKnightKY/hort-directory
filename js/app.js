@@ -137,13 +137,11 @@
 
     function addDataToMap(data, style, map) {
         var dataLayer = L.geoJson(data, {
-          style: style},
-          {
-            onEachFeature: function (feature, layer) {
-			          layer.bindPopup(feature.properties.name);
-		        }
-          }
-        );
+          style: style,
+          onEachFeature: function (feature, layer) {
+			          layer.bindTooltip("</h2>" + feature.properties.name + " County</h2>");
+		      }
+        });
         dataLayer.addTo(map);
     }
 
