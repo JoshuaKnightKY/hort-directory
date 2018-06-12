@@ -43,13 +43,13 @@
       });
 
     // load KY county polygons
-    $.getJSON("./data/ky-counties.geojson", function(counties) { 
+    $.getJSON("./data/ky-counties.geojson", function(counties) {
 
           // load CSV file
           omnivore.csv('data/GeocodeHortDirectory.csv')
           .on('ready', function(e) {
               drawMap(e.target.toGeoJSON());
-              addDataToMap(counties, countyStyle, map); 
+              addDataToMap(counties, countyStyle, map);
           })
           .on('error', function(e) {
               console.log(e.error);
@@ -74,24 +74,21 @@
 
     function drawMap(data) {
 
-      // // add custom markers for entire geojson with tooltips
-      // for (var i = 0; i < data.features.length; i++){
-      //   var props = data.features[i].properties;
-      //   var iconLocation = createIcon(props.resource_t);
-      //   var locationPopup =
-      //     "<h2>" + props.resource_t + "</h2>" +  props.optional_r + "<br><b>" + props.org_name + "</b>" +
-      //     "<p>" + props.address + "<br><br><b>Contact Information:  <br></b>" + props.contact_na + "<br>" +
-      //     props.contact_ti + "<br>" + props.phone + "<br><a href='mailto:" + props.email + "'>" + props.email + "</a></p></p>";
-      //     // swap order of coordinates
-      //     var coordinates = [data.features[i].geometry.coordinates[1], data.features[i].geometry.coordinates[0]]
-      //     // L.marker(coordinates, {icon: iconLocation}).bindPopup(locationPopup).addTo(map);
-      //   };
-
       // create layer groups by resource type
       var greenhouseLayer = L.geoJson(data, {
         filter: greenhouseFilter,
         pointToLayer: function(feature,latlng) {
             return L.marker(latlng, {icon: greenhouseIcon});
+          },
+          onEachFeature : function(feature,layer) {
+            var props = feature.properties;
+            var locationPopup =
+              "<h2>" + props.resource_t + "</h2>" +  props.optional_r + "<br><b>" + props.org_name + "</b>" +
+              "<p>" + props.address + "<br><br><b>Contact Information:  <br></b>" + props.contact_na + "<br>" +
+              props.contact_ti + "<br>" + props.phone + "<br><a href='mailto:" + props.email + "'>" + props.email + "</a></p></p>";
+              layer.on('mouseover', function() {
+                layer.bindPopup(locationPopup);
+              });
           }
         }).addTo(map);
 
@@ -101,15 +98,14 @@
               return L.marker(latlng, {icon: equipmentIcon});
             },
             onEachFeature : function(feature,layer) {
+              var props = feature.properties;
+              var locationPopup =
+                "<h2>" + props.resource_t + "</h2>" +  props.optional_r + "<br><b>" + props.org_name + "</b>" +
+                "<p>" + props.address + "<br><br><b>Contact Information:  <br></b>" + props.contact_na + "<br>" +
+                props.contact_ti + "<br>" + props.phone + "<br><a href='mailto:" + props.email + "'>" + props.email + "</a></p></p>";
                 layer.on('mouseover', function() {
-                  layer.bindPopup("Shared Equipment");
+                  layer.bindPopup(locationPopup);
                 });
-            },
-            style: function(feature) {
-              return {
-                color: '#01D9FC',
-                fillColor: '#008196'
-              }
             }
         }).addTo(map);
 
@@ -137,29 +133,6 @@
         if (feature.properties.resource_t === "Shared Equipment") return true
       }
 
-
-      // createIcon function assigns iconURL based on type
-      // function createIcon(locationType) {
-      //   var iconURL = "",
-      //       iconSize = 35;
-      //
-      //   if (locationType == "Shared Equipment") {
-      //       iconURL = "icons/equipment.png",
-      //       iconSize = [35, 25];
-      //   } else if (locationType == "Educational Greenhouse") {
-      //       iconURL = "icons/flower.png";
-      //   } else {
-      //       iconSize = [0, 0];
-      //   }
-      //
-      //   // return result, iconUrl is argument for L.icon, NOT iconURL
-      //   var result = L.icon({
-      //       iconUrl: iconURL,
-      //       iconSize: iconSize,
-      //       popupAnchor: [0, -15]
-      //   });
-      //   return result;
-      // };
     } // end drawMap()
 
     function addDataToMap(data, style, map) {
@@ -167,7 +140,6 @@
           style: style},
           {
             onEachFeature: function (feature, layer) {
-                console.log(feature);
 			          layer.bindPopup(feature.properties.name);
 		        }
           }
