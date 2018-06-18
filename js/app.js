@@ -139,7 +139,7 @@
         var dataLayer = L.geoJson(data, {
           style: style,
           onEachFeature: function (feature, layer) {
-			          layer.bindTooltip("</h2>" + feature.properties.name + " County</h2>");
+			          layer.bindTooltip("<h2>" + feature.properties.name + " County</h2>");
 		      }
         });
         dataLayer.addTo(map);
