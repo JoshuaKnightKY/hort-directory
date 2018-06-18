@@ -1,8 +1,8 @@
 (function(){
 
     // initialize map, centered on KY
-    var southWest = L.latLng(36.469131, -89.606024),
-        northEast = L.latLng(39.509346, -81.639120),
+    var southWest = L.latLng(36.01, -89.61),
+        northEast = L.latLng(39.51, -81.64),
         bounds = L.latLngBounds(southWest, northEast);
 
     var map = L.map('map', {
