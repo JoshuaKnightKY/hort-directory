@@ -38,13 +38,14 @@
    cursor: help;
    text-align: left;
    outline: none;
+   border-radius: 5px;
    font-size: 15px;
    z-index: 800;
   }
 
  /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
  .active, .collapsible:hover {
-   background-color: #ccc;
+   background-color: #005d7e;
   }
 
  /* Style the collapsible content. Note: hidden by default */

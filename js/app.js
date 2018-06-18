@@ -86,7 +86,7 @@
               "<h2>" + props.resource_t + "</h2>" +  props.optional_r + "<br><b>" + props.org_name + "</b>" +
               "<p>" + props.address + "<br><br><b>Contact Information:  <br></b>" + props.contact_na + "<br>" +
               props.contact_ti + "<br>" + props.phone + "<br><a href='mailto:" + props.email + "'>" + props.email + "</a></p></p>";
-              layer.on('mouseover', function() {
+              layer.on('click', function() {
                 layer.bindPopup(locationPopup);
               });
           }
@@ -103,7 +103,7 @@
                 "<h2>" + props.resource_t + "</h2>" +  props.optional_r + "<br><b>" + props.org_name + "</b>" +
                 "<p>" + props.address + "<br><br><b>Contact Information:  <br></b>" + props.contact_na + "<br>" +
                 props.contact_ti + "<br>" + props.phone + "<br><a href='mailto:" + props.email + "'>" + props.email + "</a></p></p>";
-                layer.on('mouseover', function() {
+                layer.on('click', function() {
                   layer.bindPopup(locationPopup);
                 });
             }
