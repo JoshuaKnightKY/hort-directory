@@ -13,7 +13,6 @@
         minZoom: 7.2,
         maxZoom: 18,
       });
-    map.setMaxBounds(map.getBounds());
 
     // mapbox API access Token
       var accessToken = 'pk.eyJ1Ijoia29uc29sdXMiLCJhIjoiY2pnd2d2dXJrMTk4MzMzcGRmNjl6enpmYyJ9.MC43t60Y6axGbi32YET_tA'
