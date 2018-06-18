@@ -24,8 +24,6 @@
         accessToken: accessToken
       }).addTo(map);
 
-
-
     // set display style for county polygons
       var countyStyle = {
           "color": "#005d7e",
@@ -37,7 +35,7 @@
       // set icons for layer types
       var greenhouseIcon = L.icon({
           iconUrl: "./icons/flower.png",
-          iconSize: [35, 25],
+          iconSize: [35, 35],
           popupAnchor: [0, -15]
       });
 
@@ -62,7 +60,7 @@
 
     });
 
-        // collapsible meta-text
+    // collapsible meta-text
     var coll = document.getElementsByClassName("collapsible");
     var i;
     for (i = 0; i < coll.length; i++) {
@@ -74,11 +72,12 @@
         } else {
           content.style.display = "block";
         }
-      });
+      }
+    );
     }
 
-    function drawMap(data) {
 
+    function drawMap(data) {
 
       // create layer groups by resource type
       var greenhouseLayer = L.geoJson(data, {
@@ -89,7 +88,7 @@
           onEachFeature : function(feature,layer) {
             var props = feature.properties;
             var locationPopup =
-              "<h2>" + props.resource_t + "</h2>" +  props.optional_r + "<br><b>" + props.org_name + "</b>" +
+              "<h2>" + props.resource_t + "</h2>" + "<b>" + props.org_name + "</b>" +
               "<p>" + props.address + "<br><br><b>Contact Information:  <br></b>" + props.contact_na + "<br>" +
               props.contact_ti + "<br>" + props.phone + "<br><a href='mailto:" + props.email + "'>" + props.email + "</a></p></p>";
               layer.on('click', function() {
@@ -128,6 +127,33 @@
       };
 
       L.control.layers(null, sourcesLabels, { collapsed:false }).addTo(map);
+
+      // add search box
+      var geocoder = L.Control.geocoder().addTo(map);
+
+      // add scale factor
+      L.control.scalefactor({position:"bottomright"}).addTo(map);
+
+      // Get the modal
+      var modal = document.getElementById('myModal');
+      // Get the button that opens the modal
+      var btn = document.getElementById("myBtn");
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+      // When the user clicks the button, open the modal
+      btn.onclick = function() {
+          modal.style.display = "block";
+      }
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function() {
+          modal.style.display = "none";
+      }
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function(event) {
+          if (event.target == modal) {
+              modal.style.display = "none";
+          }
+      }
 
 
       // filtering functions for creating multiple layers from single geojson
