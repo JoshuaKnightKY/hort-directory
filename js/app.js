@@ -1,13 +1,19 @@
 (function(){
 
     // initialize map, centered on KY
-      var map = L.map('map', {
+    var southWest = L.latLng(36.469131, -89.606024),
+        northEast = L.latLng(39.509346, -81.639120),
+        bounds = L.latLngBounds(southWest, northEast);
+
+    var map = L.map('map', {
         zoomSnap: .05,
         center: [37.839333, -85.7],
+        maxBounds: bounds,
         zoom: 7.5,
-        minZoom: 6,
+        minZoom: 7.2,
         maxZoom: 18,
       });
+    map.setMaxBounds(map.getBounds());
 
     // mapbox API access Token
       var accessToken = 'pk.eyJ1Ijoia29uc29sdXMiLCJhIjoiY2pnd2d2dXJrMTk4MzMzcGRmNjl6enpmYyJ9.MC43t60Y6axGbi32YET_tA'
@@ -57,7 +63,7 @@
 
     });
 
-    // collapsible meta-text
+        // collapsible meta-text
     var coll = document.getElementsByClassName("collapsible");
     var i;
     for (i = 0; i < coll.length; i++) {
@@ -73,6 +79,7 @@
     }
 
     function drawMap(data) {
+
 
       // create layer groups by resource type
       var greenhouseLayer = L.geoJson(data, {
