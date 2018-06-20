@@ -5,13 +5,14 @@
 #title {
   position: absolute;
   bottom: 20px;
-  left: 0px;
+  left: 15px;
   width: 35;
-  padding: 0 5px;
+  padding: 6px 12px;
   background: rgba(256, 256, 256, .65);
   border: 1px solid #005d7e;
-  border-radius: 5px;
+  border-radius: 3px;
   z-index: 800;
+  font-size: 1.6em;
 }
 
 /* modal test */
@@ -31,8 +32,8 @@ z-index: 800;
 
 #myBtn {
 position: absolute;
-bottom: 25px;
-left: 350px;
+top: 140px;
+right: 15px;
 width: 30px;
 height: 30px;
 background: url(../icons/information-15.svg);
