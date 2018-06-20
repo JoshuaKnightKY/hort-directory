@@ -32,7 +32,7 @@ z-index: 800;
 
 #myBtn {
 position: absolute;
-top: 140px;
+bottom: 40px;
 right: 15px;
 width: 30px;
 height: 30px;
@@ -67,7 +67,7 @@ z-index: 800;
   margin: auto;
   padding: 20px;
   font-size: 12px;
-  line-height: 15px;    
+  line-height: 15px;
   border: 1px solid #005d7e;
   border-radius: 5px;
   width: 80%;
@@ -127,4 +127,3 @@ a {
 a:hover {
     color: #000000;
 }
-
